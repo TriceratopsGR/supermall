@@ -1,5 +1,5 @@
 <template>
-  <div class="goods">
+  <div class="goods" ref="goods">
     <goods-list-item v-for="item in goods" :key="item.acm" :goods-item="item" />
   </div>
 </template>
@@ -22,7 +22,9 @@ export default {
   data() {
     return {};
   },
-  mounted() {},
+  mounted() {
+    this.$refs.goods.offsetHeight;
+  },
 
   methods: {},
 };

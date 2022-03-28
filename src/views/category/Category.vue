@@ -1,18 +1,31 @@
 <template>
   <div class="wrapper">
     <ul class="content">
+      <!-- 1. 无论是否设置click:false,button都可以点击 -->
       <button @click="btnClick()">按钮</button>
-      <li>分类1</li>
-      <li>分类2</li>
-      <li>分类3</li>
-      <li>分类4</li>
-      <li>分类5</li>
-      <li>分类6</li>
-      <li>分类7</li>
-      <li>分类8</li>
-      <li>分类9</li>
-      <li>分类10</li>
-      <li>分类11</li>
+
+      <!-- 2. 无论是否设置click:true,那么div才能监听点击 -->
+      <div @click="btnClick()">div的点击按钮</div>
+      <div>
+        <div>
+          sdasd
+          <ul>
+            <li>aa</li>
+            <li>分类1</li>
+            <li>分类2</li>
+            <li>分类3</li>
+            <li>分类4</li>
+            <li>分类5</li>
+            <li>分类6</li>
+            <li>分类7</li>
+            <li>分类8</li>
+            <li>分类9</li>
+            <li>分类10</li>
+            <li>分类11</li>
+          </ul>
+        </div>
+      </div>
+
       <li>分类12</li>
       <li>分类13</li>
       <li>分类14</li>
@@ -327,6 +340,7 @@ export default {
     this.scroll = new BScroll(document.querySelector(".wrapper"), {
       probeType: 3,
       pullUpLoad: true,
+      click: true,
     });
 
     this.scroll.on("scroll", (position) => {

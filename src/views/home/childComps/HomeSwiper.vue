@@ -2,9 +2,9 @@
   <a-carousel autoplay>
     <div v-for="item in banners" :key="item.acm">
       <div class="carousel">
-        <a :href="item.link"
-          ><img class="carousel-img" :src="item.image" alt=""
-        /></a>
+        <a :href="item.link">
+          <img class="carousel-img" :src="item.image" alt="" />
+        </a>
       </div>
     </div>
   </a-carousel>
@@ -24,7 +24,9 @@ export default {
     return {};
   },
 
-  mounted() {},
+  mounted() {
+    // console.log(this.banners);
+  },
 
   methods: {},
 };

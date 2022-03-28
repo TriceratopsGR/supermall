@@ -3,7 +3,16 @@
     <nav-bar class="home-nva">
       <div slot="center">购物街</div>
     </nav-bar>
-    <scroll class="content">
+    <!-- 滚动 -->
+    <scroll
+      class="content"
+      ref="Scroll"
+      :probe-type="3"
+      @scroll="contentScroll"
+      :pull-up-load="true"
+      @pullingUp="loadMore"
+    >
+      <!--  @pullingUp="loadMore" -->
       <!-- 轮播图 -->
       <hello-world :banners="banners" />
       <recommend-view :recommend="recommend" />
@@ -13,9 +22,18 @@
         @tabClick="tabClick"
         :titles="['流行', '新款', '精选']"
       />
-      <goods-list :goods="currentType" />
+
+      <div ref="goodsList" :style="'height:' + height + 'px'">
+        <goods-list
+          class="goods_list"
+          :style="'height:' + height + 'px'"
+          :goods="currentType"
+        />
+      </div>
+
+      <!-- 组件监听点击 v-show="isShowBackTop" -->
     </scroll>
-    <back-top></back-top>
+    <back-top @click.native="backCilck()"></back-top>
   </div>
 </template>
 
@@ -47,6 +65,8 @@ export default {
         sell: { type: "sell", page: 0, list: [] },
       },
       currentType: [],
+      isShowBackTop: false,
+      height: null,
     };
   },
   components: {
@@ -69,8 +89,15 @@ export default {
     this.grtHomeGoods(this.goods.new.type);
     this.grtHomeGoods(this.goods.sell.type);
     this.currentType = this.goods.pop.list;
+    //console.log(this.grtHomeGoods("sell"));
   },
+  mounted() {},
   methods: {
+    //回到顶部
+    backCilck() {
+      console.log("回到顶部");
+      this.$refs.Scroll.scrollTo(0, 0);
+    },
     //事件监听
     tabClick(index) {
       switch (index) {
@@ -84,11 +111,13 @@ export default {
           this.currentType = this.goods.sell.list;
           break;
       }
+      // console.log(this.$refs.goodsList.offsetHeight);
+      this.height = this.$refs.goodsList.offsetHeight;
     },
     //网络请求
     grtHomeMultidata() {
       getHomeMultidata().then((res) => {
-        console.log(res.data);
+        // console.log(res.data.banner.list);
         this.banners = res.data.banner.list;
         this.recommend = res.data.recommend.list;
       });
@@ -98,8 +127,14 @@ export default {
       grtHomeGoods(type, page).then((res) => {
         this.goods[type].list.push(...res.data.list);
         this.goods[type].page += 1;
-        console.log(res);
       });
+    },
+    contentScroll(position) {
+      //  打印的y值都是负值
+      //this.isShowBackTop = -position.y > 1000;
+    },
+    loadMore() {
+      console.log("上拉加载更多");
     },
   },
 };
@@ -141,5 +176,7 @@ export default {
   bottom: 49px;
   left: 0;
   right: 0;
+}
+.goods_list {
 }
 </style>
